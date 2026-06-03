@@ -7,6 +7,7 @@ while True:
     print("2 - Wyświetl biblioteki")
     print("3 - Edytuj bibliotekę")
     print("4 - Usuń bibliotekę")
+    print("5 - Pokaż mapę bibliotek")
     print("0 - Wyjście")
 
     wybor = input("Wybierz opcję: ")
@@ -14,14 +15,20 @@ while True:
     if wybor == "1":
         add_biblioteka()
 
-    if wybor == "2":
+    elif wybor == "2":
         read_biblioteki()
 
-    if wybor == "3":
+    elif wybor == "3":
         update_biblioteka()
 
-    if wybor == "4":
+    elif wybor == "4":
         delete_biblioteka()
 
-    if wybor == "0":
+    elif wybor == "5":
+        get_mapa()
+
+    elif wybor == "0":
         break
+
+    else:
+        print("Nieprawidłowa opcja")
