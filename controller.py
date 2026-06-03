@@ -1,8 +1,10 @@
-from model import biblioteki
+
+from model import biblioteki, klienci
 import requests
 import folium
 from bs4 import BeautifulSoup
 
+# BIBLIOTEKI
 
 def add_biblioteka():
     nazwa = input("Podaj nazwę biblioteki: ")
@@ -119,3 +121,179 @@ def get_mapa():
     m.save("mapa_bibliotek.html")
 
     print("Mapa została zapisana")
+
+# KLIENCI
+
+def add_klient():
+
+    imie = input("Podaj imię klienta: ").title()
+    nazwisko = input("Podaj nazwisko klienta: ").title()
+
+    if len(biblioteki) == 0:
+        print("Brak bibliotek")
+        return
+
+    print("\nDostępne biblioteki:")
+
+    for i, biblioteka in enumerate(biblioteki):
+        print(f"{i+1}. {biblioteka['nazwa']}")
+
+    numer = int(input("Wybierz numer biblioteki: "))
+
+    if 1 <= numer <= len(biblioteki):
+
+        miasto = input("Podaj miasto klienta: ").title()
+
+        coordinates = get_coordinates(miasto)
+
+        klient = {
+            "imie": imie,
+            "nazwisko": nazwisko,
+            "biblioteka": biblioteki[numer - 1]["nazwa"],
+            "miasto": miasto,
+            "lat": coordinates[0],
+            "lon": coordinates[1]
+        }
+
+        klienci.append(klient)
+
+        print("Klient został dodany")
+
+
+
+def read_klienci():
+
+    if len(klienci) == 0:
+        print("Brak klientów")
+        return
+
+    for i, klient in enumerate(klienci):
+        print(
+            f"{i+1}. "
+            f"{klient['imie']} "
+            f"{klient['nazwisko']} - "
+            f"{klient['biblioteka']} - "
+            f"{klient['miasto']}"
+        )
+
+
+def update_klient():
+
+    if len(klienci) == 0:
+        print("Brak klientów")
+        return
+
+    read_klienci()
+
+    numer = int(input("Podaj numer klienta do edycji: "))
+
+    if 1 <= numer <= len(klienci):
+
+        nowe_imie = input("Nowe imię: ").title()
+        nowe_nazwisko = input("Nowe nazwisko: ").title()
+
+        print("\nDostępne biblioteki:")
+
+        for i, biblioteka in enumerate(biblioteki):
+            print(f"{i+1}. {biblioteka['nazwa']}")
+
+        numer_biblioteki = int(input("Wybierz numer biblioteki: "))
+
+        nowe_miasto = input("Nowe miasto: ").title()
+
+        coordinates = get_coordinates(nowe_miasto)
+
+        if 1 <= numer_biblioteki <= len(biblioteki):
+
+            klienci[numer - 1]["imie"] = nowe_imie
+            klienci[numer - 1]["nazwisko"] = nowe_nazwisko
+            klienci[numer - 1]["biblioteka"] = biblioteki[numer_biblioteki - 1]["nazwa"]
+
+            klienci[numer - 1]["miasto"] = nowe_miasto
+            klienci[numer - 1]["lat"] = coordinates[0]
+            klienci[numer - 1]["lon"] = coordinates[1]
+
+            print("Klient został zaktualizowany")
+
+
+def delete_klient():
+
+    if len(klienci) == 0:
+        print("Brak klientów")
+        return
+
+    read_klienci()
+
+    numer = int(input("Podaj numer klienta do usunięcia: "))
+
+    if 1 <= numer <= len(klienci):
+
+        klienci.pop(numer - 1)
+
+        print("Klient został usunięty")
+
+
+
+def get_mapa_klientow():
+
+    m = folium.Map(location=[52, 21], zoom_start=6)
+
+    for klient in klienci:
+
+        folium.Marker(
+            location=[
+                klient["lat"],
+                klient["lon"]
+            ],
+            popup=f"{klient['imie']} {klient['nazwisko']}"
+        ).add_to(m)
+
+    m.save("mapa_klientow.html")
+
+    print("Mapa klientów została zapisana")
+
+def read_klienci_biblioteki():
+
+    read_biblioteki()
+
+    numer = int(input("Wybierz bibliotekę: "))
+
+    nazwa = biblioteki[numer - 1]["nazwa"]
+
+    print(f"\nKlienci biblioteki {nazwa}:")
+
+    for klient in klienci:
+        if klient["biblioteka"] == nazwa:
+            print(
+                f"{klient['imie']} "
+                f"{klient['nazwisko']}"
+            )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
