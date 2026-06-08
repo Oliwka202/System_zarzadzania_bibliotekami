@@ -1,5 +1,5 @@
 
-from model import biblioteki, klienci, pracownicy, ksiazki
+from model import biblioteki, klienci, pracownicy, ksiazki, wypozyczenia
 import requests
 import folium
 from bs4 import BeautifulSoup
@@ -524,6 +524,117 @@ def delete_ksiazka():
 
         print("Książka została usunięta")
 
+
+
+# wypozyczenia
+
+
+def add_wypozyczenie():
+
+    if len(klienci) == 0:
+        print("Brak klientów")
+        return
+
+    if len(ksiazki) == 0:
+        print("Brak książek")
+        return
+
+    print("\nKlienci:")
+
+    for i, klient in enumerate(klienci):
+        print(f"{i+1}. {klient['imie']} {klient['nazwisko']}")
+
+    numer_klienta = int(input("Wybierz klienta: "))
+
+    print("\nKsiążki:")
+
+    for i, ksiazka in enumerate(ksiazki):
+        print(f"{i+1}. {ksiazka['tytul']}")
+
+    numer_ksiazki = int(input("Wybierz książkę: "))
+
+    if (
+        1 <= numer_klienta <= len(klienci)
+        and
+        1 <= numer_ksiazki <= len(ksiazki)
+    ):
+
+        wypozyczenie = {
+            "klient":
+                f"{klienci[numer_klienta - 1]['imie']} "
+                f"{klienci[numer_klienta - 1]['nazwisko']}",
+            "ksiazka":
+                ksiazki[numer_ksiazki - 1]["tytul"]
+        }
+
+        wypozyczenia.append(wypozyczenie)
+
+        print("Książka została wypożyczona")
+
+def read_wypozyczenia():
+
+    if len(wypozyczenia) == 0:
+        print("Brak wypożyczeń")
+        return
+
+    for i, wypozyczenie in enumerate(wypozyczenia):
+
+        print(
+            f"{i+1}. "
+            f"{wypozyczenie['klient']} -> "
+            f"{wypozyczenie['ksiazka']}"
+        )
+
+
+def delete_wypozyczenie():
+
+    if len(wypozyczenia) == 0:
+        print("Brak wypożyczeń")
+        return
+
+    read_wypozyczenia()
+
+    numer = int(input("Wybierz wypożyczenie do zwrotu: "))
+
+    if 1 <= numer <= len(wypozyczenia):
+
+        wypozyczenia.pop(numer - 1)
+
+        print("Książka została zwrócona")
+
+def read_wypozyczenia_klienta():
+
+    if len(klienci) == 0:
+        print("Brak klientów")
+        return
+
+    print("\nKlienci:")
+
+    for i, klient in enumerate(klienci):
+        print(f"{i+1}. {klient['imie']} {klient['nazwisko']}")
+
+    numer = int(input("Wybierz klienta: "))
+
+    if 1 <= numer <= len(klienci):
+
+        nazwa_klienta = (
+            f"{klienci[numer - 1]['imie']} "
+            f"{klienci[numer - 1]['nazwisko']}"
+        )
+
+        print(f"\nKsiążki wypożyczone przez {nazwa_klienta}:")
+
+        znaleziono = False
+
+        for wypozyczenie in wypozyczenia:
+
+            if wypozyczenie["klient"] == nazwa_klienta:
+
+                print(wypozyczenie["ksiazka"])
+                znaleziono = True
+
+        if not znaleziono:
+            print("Brak wypożyczonych książek")
 
 
 
