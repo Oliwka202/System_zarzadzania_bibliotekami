@@ -18,6 +18,12 @@ while True:
     print("9 - Usuń klienta")
     print("10 - Pokaż mapę klientów")
     print("11 - Pokaż klientów biblioteki")
+    print("12 - Dodaj pracownika")
+    print("13 - Wyświetl pracowników")
+    print("14 - Edytuj pracownika")
+    print("15 - Usuń pracownika")
+    print("16 - Pokaż mapę pracowników")
+    print("17 - Pokaż pracowników biblioteki")
 
     print("\n0 - Wyjście")
 
@@ -55,6 +61,24 @@ while True:
 
     elif wybor == "11":
         read_klienci_biblioteki()
+
+    elif wybor == "12":
+        add_pracownik()
+
+    elif wybor == "13":
+        read_pracownicy()
+
+    elif wybor == "14":
+        update_pracownik()
+
+    elif wybor == "15":
+        delete_pracownik()
+
+    elif wybor == "16":
+        get_mapa_pracownikow()
+
+    elif wybor == "17":
+        read_pracownicy_biblioteki()
 
     elif wybor == "0":
         break

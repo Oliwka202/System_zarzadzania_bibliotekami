@@ -1,5 +1,5 @@
 
-from model import biblioteki, klienci
+from model import biblioteki, klienci, pracownicy
 import requests
 import folium
 from bs4 import BeautifulSoup
@@ -270,10 +270,170 @@ def read_klienci_biblioteki():
             )
 
 
+def add_pracownik():
+
+    imie = input("Podaj imię pracownika: ").title()
+    nazwisko = input("Podaj nazwisko pracownika: ").title()
+
+    if len(biblioteki) == 0:
+        print("Brak bibliotek")
+        return
+
+    print("\nDostępne biblioteki:")
+
+    for i, biblioteka in enumerate(biblioteki):
+        print(f"{i+1}. {biblioteka['nazwa']}")
+
+    numer = int(input("Wybierz numer biblioteki: "))
+
+    if 1 <= numer <= len(biblioteki):
+
+        miasto = input("Podaj miasto pracownika: ").title()
+
+        coordinates = get_coordinates(miasto)
+
+        pracownik = {
+            "imie": imie,
+            "nazwisko": nazwisko,
+            "biblioteka": biblioteki[numer - 1]["nazwa"],
+            "miasto": miasto,
+            "lat": coordinates[0],
+            "lon": coordinates[1]
+        }
+
+        pracownicy.append(pracownik)
+
+        print("Pracownik został dodany")
+
+
+def read_pracownicy():
+
+    if len(pracownicy) == 0:
+        print("Brak pracowników")
+        return
+
+    for i, pracownik in enumerate(pracownicy):
+
+        print(
+            f"{i+1}. "
+            f"{pracownik['imie']} "
+            f"{pracownik['nazwisko']} - "
+            f"{pracownik['biblioteka']} - "
+            f"{pracownik['miasto']}"
+        )
+
+
+def delete_pracownik():
+
+    if len(pracownicy) == 0:
+        print("Brak pracowników")
+        return
+
+    read_pracownicy()
+
+    numer = int(input("Podaj numer pracownika do usunięcia: "))
+
+    if 1 <= numer <= len(pracownicy):
+
+        pracownicy.pop(numer - 1)
+
+        print("Pracownik został usunięty")
+
+
+def update_pracownik():
+
+    if len(pracownicy) == 0:
+        print("Brak pracowników")
+        return
+
+    read_pracownicy()
+
+    numer = int(input("Podaj numer pracownika do edycji: "))
+
+    if 1 <= numer <= len(pracownicy):
+
+        nowe_imie = input("Nowe imię: ").title()
+        nowe_nazwisko = input("Nowe nazwisko: ").title()
+
+        print("\nDostępne biblioteki:")
+
+        for i, biblioteka in enumerate(biblioteki):
+            print(f"{i+1}. {biblioteka['nazwa']}")
+
+        numer_biblioteki = int(input("Wybierz numer biblioteki: "))
+
+        nowe_miasto = input("Nowe miasto: ").title()
+
+        coordinates = get_coordinates(nowe_miasto)
+
+        if 1 <= numer_biblioteki <= len(biblioteki):
+
+            pracownicy[numer - 1]["imie"] = nowe_imie
+            pracownicy[numer - 1]["nazwisko"] = nowe_nazwisko
+            pracownicy[numer - 1]["biblioteka"] = biblioteki[numer_biblioteki - 1]["nazwa"]
+
+            pracownicy[numer - 1]["miasto"] = nowe_miasto
+            pracownicy[numer - 1]["lat"] = coordinates[0]
+            pracownicy[numer - 1]["lon"] = coordinates[1]
+
+            print("Pracownik został zaktualizowany")
+
+
+def get_mapa_pracownikow():
+
+    m = folium.Map(location=[52, 21], zoom_start=6)
+
+    for pracownik in pracownicy:
+
+        folium.Marker(
+            location=[
+                pracownik["lat"],
+                pracownik["lon"]
+            ],
+            popup=f"{pracownik['imie']} {pracownik['nazwisko']}"
+        ).add_to(m)
+
+    m.save("mapa_pracownikow.html")
+
+    print("Mapa pracowników została zapisana")
 
 
 
 
+def read_pracownicy_biblioteki():
+
+    if len(biblioteki) == 0:
+        print("Brak bibliotek")
+        return
+
+    read_biblioteki()
+
+    numer = int(input("Wybierz bibliotekę: "))
+
+    if 1 <= numer <= len(biblioteki):
+
+        nazwa_biblioteki = biblioteki[numer - 1]["nazwa"]
+
+        print(f"\nPracownicy biblioteki {nazwa_biblioteki}:")
+
+        znaleziono = False
+
+        for pracownik in pracownicy:
+
+            if pracownik["biblioteka"] == nazwa_biblioteki:
+
+                print(
+                    f"{pracownik['imie']} "
+                    f"{pracownik['nazwisko']}"
+                )
+
+                znaleziono = True
+
+        if not znaleziono:
+            print("Brak pracowników")
+
+    else:
+        print("Nieprawidłowy numer")
 
 
 
