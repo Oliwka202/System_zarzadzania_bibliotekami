@@ -28,7 +28,10 @@ while True:
     print("19 - Wyświetl książki")
     print("20 - Edytuj książkę")
     print("21 - Usuń książkę")
-
+    print("22 - Wypożycz książkę")
+    print("23 - Wyświetl wypożyczenia")
+    print("24 - Zwróć książkę")
+    print("25 - Książki wypożyczone przez klienta")
     print("\n0 - Wyjście")
 
     wybor = input("Wybierz opcję: ")
@@ -95,6 +98,18 @@ while True:
 
     elif wybor == "21":
         delete_ksiazka()
+
+    elif wybor == "22":
+        add_wypozyczenie()
+
+    elif wybor == "23":
+        read_wypozyczenia()
+
+    elif wybor == "24":
+        delete_wypozyczenie()
+
+    elif wybor == "25":
+        read_wypozyczenia_klienta()
 
     elif wybor == "0":
         break
