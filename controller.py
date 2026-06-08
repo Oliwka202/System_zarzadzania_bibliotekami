@@ -1,8 +1,8 @@
-
 from model import biblioteki, klienci, pracownicy, ksiazki, wypozyczenia
 import requests
 import folium
 from bs4 import BeautifulSoup
+
 
 # BIBLIOTEKI
 
@@ -23,17 +23,15 @@ def add_biblioteka():
 
 
 def read_biblioteki():
-
     if len(biblioteki) == 0:
         print("Brak bibliotek")
         return
 
     for i, biblioteka in enumerate(biblioteki):
-        print(f"{i+1}. {biblioteka['nazwa']} - {biblioteka['miasto']}")
+        print(f"{i + 1}. {biblioteka['nazwa']} - {biblioteka['miasto']}")
 
 
 def update_biblioteka():
-
     if len(biblioteki) == 0:
         print("Brak bibliotek")
         return
@@ -62,7 +60,6 @@ def update_biblioteka():
 
 
 def delete_biblioteka():
-
     if len(biblioteki) == 0:
         print("Brak bibliotek")
         return
@@ -82,7 +79,6 @@ def delete_biblioteka():
 
 
 def get_coordinates(miasto):
-
     url = f'https://pl.wikipedia.org/wiki/{miasto}'
 
     headers = {
@@ -105,11 +101,9 @@ def get_coordinates(miasto):
 
 
 def get_mapa():
-
     m = folium.Map([52, 21], zoom_start=6)
 
     for biblioteka in biblioteki:
-
         folium.Marker(
             location=[
                 biblioteka['lat'],
@@ -122,10 +116,10 @@ def get_mapa():
 
     print("Mapa została zapisana")
 
+
 # KLIENCI
 
 def add_klient():
-
     imie = input("Podaj imię klienta: ").title()
     nazwisko = input("Podaj nazwisko klienta: ").title()
 
@@ -136,12 +130,11 @@ def add_klient():
     print("\nDostępne biblioteki:")
 
     for i, biblioteka in enumerate(biblioteki):
-        print(f"{i+1}. {biblioteka['nazwa']}")
+        print(f"{i + 1}. {biblioteka['nazwa']}")
 
     numer = int(input("Wybierz numer biblioteki: "))
 
     if 1 <= numer <= len(biblioteki):
-
         miasto = input("Podaj miasto klienta: ").title()
 
         coordinates = get_coordinates(miasto)
@@ -160,16 +153,14 @@ def add_klient():
         print("Klient został dodany")
 
 
-
 def read_klienci():
-
     if len(klienci) == 0:
         print("Brak klientów")
         return
 
     for i, klient in enumerate(klienci):
         print(
-            f"{i+1}. "
+            f"{i + 1}. "
             f"{klient['imie']} "
             f"{klient['nazwisko']} - "
             f"{klient['biblioteka']} - "
@@ -178,7 +169,6 @@ def read_klienci():
 
 
 def update_klient():
-
     if len(klienci) == 0:
         print("Brak klientów")
         return
@@ -195,7 +185,7 @@ def update_klient():
         print("\nDostępne biblioteki:")
 
         for i, biblioteka in enumerate(biblioteki):
-            print(f"{i+1}. {biblioteka['nazwa']}")
+            print(f"{i + 1}. {biblioteka['nazwa']}")
 
         numer_biblioteki = int(input("Wybierz numer biblioteki: "))
 
@@ -204,7 +194,6 @@ def update_klient():
         coordinates = get_coordinates(nowe_miasto)
 
         if 1 <= numer_biblioteki <= len(biblioteki):
-
             klienci[numer - 1]["imie"] = nowe_imie
             klienci[numer - 1]["nazwisko"] = nowe_nazwisko
             klienci[numer - 1]["biblioteka"] = biblioteki[numer_biblioteki - 1]["nazwa"]
@@ -217,7 +206,6 @@ def update_klient():
 
 
 def delete_klient():
-
     if len(klienci) == 0:
         print("Brak klientów")
         return
@@ -227,19 +215,15 @@ def delete_klient():
     numer = int(input("Podaj numer klienta do usunięcia: "))
 
     if 1 <= numer <= len(klienci):
-
         klienci.pop(numer - 1)
 
         print("Klient został usunięty")
 
 
-
 def get_mapa_klientow():
-
     m = folium.Map(location=[52, 21], zoom_start=6)
 
     for klient in klienci:
-
         folium.Marker(
             location=[
                 klient["lat"],
@@ -252,8 +236,8 @@ def get_mapa_klientow():
 
     print("Mapa klientów została zapisana")
 
-def read_klienci_biblioteki():
 
+def read_klienci_biblioteki():
     read_biblioteki()
 
     numer = int(input("Wybierz bibliotekę: "))
@@ -271,7 +255,6 @@ def read_klienci_biblioteki():
 
 
 def add_pracownik():
-
     imie = input("Podaj imię pracownika: ").title()
     nazwisko = input("Podaj nazwisko pracownika: ").title()
 
@@ -282,12 +265,11 @@ def add_pracownik():
     print("\nDostępne biblioteki:")
 
     for i, biblioteka in enumerate(biblioteki):
-        print(f"{i+1}. {biblioteka['nazwa']}")
+        print(f"{i + 1}. {biblioteka['nazwa']}")
 
     numer = int(input("Wybierz numer biblioteki: "))
 
     if 1 <= numer <= len(biblioteki):
-
         miasto = input("Podaj miasto pracownika: ").title()
 
         coordinates = get_coordinates(miasto)
@@ -307,15 +289,13 @@ def add_pracownik():
 
 
 def read_pracownicy():
-
     if len(pracownicy) == 0:
         print("Brak pracowników")
         return
 
     for i, pracownik in enumerate(pracownicy):
-
         print(
-            f"{i+1}. "
+            f"{i + 1}. "
             f"{pracownik['imie']} "
             f"{pracownik['nazwisko']} - "
             f"{pracownik['biblioteka']} - "
@@ -324,7 +304,6 @@ def read_pracownicy():
 
 
 def delete_pracownik():
-
     if len(pracownicy) == 0:
         print("Brak pracowników")
         return
@@ -334,14 +313,12 @@ def delete_pracownik():
     numer = int(input("Podaj numer pracownika do usunięcia: "))
 
     if 1 <= numer <= len(pracownicy):
-
         pracownicy.pop(numer - 1)
 
         print("Pracownik został usunięty")
 
 
 def update_pracownik():
-
     if len(pracownicy) == 0:
         print("Brak pracowników")
         return
@@ -358,7 +335,7 @@ def update_pracownik():
         print("\nDostępne biblioteki:")
 
         for i, biblioteka in enumerate(biblioteki):
-            print(f"{i+1}. {biblioteka['nazwa']}")
+            print(f"{i + 1}. {biblioteka['nazwa']}")
 
         numer_biblioteki = int(input("Wybierz numer biblioteki: "))
 
@@ -367,7 +344,6 @@ def update_pracownik():
         coordinates = get_coordinates(nowe_miasto)
 
         if 1 <= numer_biblioteki <= len(biblioteki):
-
             pracownicy[numer - 1]["imie"] = nowe_imie
             pracownicy[numer - 1]["nazwisko"] = nowe_nazwisko
             pracownicy[numer - 1]["biblioteka"] = biblioteki[numer_biblioteki - 1]["nazwa"]
@@ -380,11 +356,9 @@ def update_pracownik():
 
 
 def get_mapa_pracownikow():
-
     m = folium.Map(location=[52, 21], zoom_start=6)
 
     for pracownik in pracownicy:
-
         folium.Marker(
             location=[
                 pracownik["lat"],
@@ -398,10 +372,7 @@ def get_mapa_pracownikow():
     print("Mapa pracowników została zapisana")
 
 
-
-
 def read_pracownicy_biblioteki():
-
     if len(biblioteki) == 0:
         print("Brak bibliotek")
         return
@@ -421,7 +392,6 @@ def read_pracownicy_biblioteki():
         for pracownik in pracownicy:
 
             if pracownik["biblioteka"] == nazwa_biblioteki:
-
                 print(
                     f"{pracownik['imie']} "
                     f"{pracownik['nazwisko']}"
@@ -432,10 +402,10 @@ def read_pracownicy_biblioteki():
         if not znaleziono:
             print("Brak pracowników")
 
+
 # ksiazki
 
 def add_ksiazka():
-
     tytul = input("Podaj tytuł książki: ").title()
     autor = input("Podaj autora: ").title()
 
@@ -446,12 +416,11 @@ def add_ksiazka():
     print("\nDostępne biblioteki:")
 
     for i, biblioteka in enumerate(biblioteki):
-        print(f"{i+1}. {biblioteka['nazwa']}")
+        print(f"{i + 1}. {biblioteka['nazwa']}")
 
     numer = int(input("Wybierz numer biblioteki: "))
 
     if 1 <= numer <= len(biblioteki):
-
         ksiazka = {
             "tytul": tytul,
             "autor": autor,
@@ -462,16 +431,15 @@ def add_ksiazka():
 
         print("Książka została dodana")
 
-def read_ksiazki():
 
+def read_ksiazki():
     if len(ksiazki) == 0:
         print("Brak książek")
         return
 
     for i, ksiazka in enumerate(ksiazki):
-
         print(
-            f"{i+1}. "
+            f"{i + 1}. "
             f"{ksiazka['tytul']} - "
             f"{ksiazka['autor']} - "
             f"{ksiazka['biblioteka']}"
@@ -479,7 +447,6 @@ def read_ksiazki():
 
 
 def update_ksiazka():
-
     if len(ksiazki) == 0:
         print("Brak książek")
         return
@@ -496,20 +463,19 @@ def update_ksiazka():
         print("\nDostępne biblioteki:")
 
         for i, biblioteka in enumerate(biblioteki):
-            print(f"{i+1}. {biblioteka['nazwa']}")
+            print(f"{i + 1}. {biblioteka['nazwa']}")
 
         numer_biblioteki = int(input("Wybierz numer biblioteki: "))
 
         if 1 <= numer_biblioteki <= len(biblioteki):
-
             ksiazki[numer - 1]["tytul"] = nowy_tytul
             ksiazki[numer - 1]["autor"] = nowy_autor
             ksiazki[numer - 1]["biblioteka"] = biblioteki[numer_biblioteki - 1]["nazwa"]
 
             print("Książka została zaktualizowana")
 
-def delete_ksiazka():
 
+def delete_ksiazka():
     if len(ksiazki) == 0:
         print("Brak książek")
         return
@@ -519,18 +485,15 @@ def delete_ksiazka():
     numer = int(input("Podaj numer książki do usunięcia: "))
 
     if 1 <= numer <= len(ksiazki):
-
         ksiazki.pop(numer - 1)
 
         print("Książka została usunięta")
-
 
 
 # wypozyczenia
 
 
 def add_wypozyczenie():
-
     if len(klienci) == 0:
         print("Brak klientów")
         return
@@ -542,23 +505,22 @@ def add_wypozyczenie():
     print("\nKlienci:")
 
     for i, klient in enumerate(klienci):
-        print(f"{i+1}. {klient['imie']} {klient['nazwisko']}")
+        print(f"{i + 1}. {klient['imie']} {klient['nazwisko']}")
 
     numer_klienta = int(input("Wybierz klienta: "))
 
     print("\nKsiążki:")
 
     for i, ksiazka in enumerate(ksiazki):
-        print(f"{i+1}. {ksiazka['tytul']}")
+        print(f"{i + 1}. {ksiazka['tytul']}")
 
     numer_ksiazki = int(input("Wybierz książkę: "))
 
     if (
-        1 <= numer_klienta <= len(klienci)
-        and
-        1 <= numer_ksiazki <= len(ksiazki)
+            1 <= numer_klienta <= len(klienci)
+            and
+            1 <= numer_ksiazki <= len(ksiazki)
     ):
-
         wypozyczenie = {
             "klient":
                 f"{klienci[numer_klienta - 1]['imie']} "
@@ -571,23 +533,21 @@ def add_wypozyczenie():
 
         print("Książka została wypożyczona")
 
-def read_wypozyczenia():
 
+def read_wypozyczenia():
     if len(wypozyczenia) == 0:
         print("Brak wypożyczeń")
         return
 
     for i, wypozyczenie in enumerate(wypozyczenia):
-
         print(
-            f"{i+1}. "
+            f"{i + 1}. "
             f"{wypozyczenie['klient']} -> "
             f"{wypozyczenie['ksiazka']}"
         )
 
 
 def delete_wypozyczenie():
-
     if len(wypozyczenia) == 0:
         print("Brak wypożyczeń")
         return
@@ -597,13 +557,12 @@ def delete_wypozyczenie():
     numer = int(input("Wybierz wypożyczenie do zwrotu: "))
 
     if 1 <= numer <= len(wypozyczenia):
-
         wypozyczenia.pop(numer - 1)
 
         print("Książka została zwrócona")
 
-def read_wypozyczenia_klienta():
 
+def read_wypozyczenia_klienta():
     if len(klienci) == 0:
         print("Brak klientów")
         return
@@ -611,7 +570,7 @@ def read_wypozyczenia_klienta():
     print("\nKlienci:")
 
     for i, klient in enumerate(klienci):
-        print(f"{i+1}. {klient['imie']} {klient['nazwisko']}")
+        print(f"{i + 1}. {klient['imie']} {klient['nazwisko']}")
 
     numer = int(input("Wybierz klienta: "))
 
@@ -629,31 +588,8 @@ def read_wypozyczenia_klienta():
         for wypozyczenie in wypozyczenia:
 
             if wypozyczenie["klient"] == nazwa_klienta:
-
                 print(wypozyczenie["ksiazka"])
                 znaleziono = True
 
         if not znaleziono:
             print("Brak wypożyczonych książek")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
