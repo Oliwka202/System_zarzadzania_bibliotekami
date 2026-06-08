@@ -24,6 +24,10 @@ while True:
     print("15 - Usuń pracownika")
     print("16 - Pokaż mapę pracowników")
     print("17 - Pokaż pracowników biblioteki")
+    print("18 - Dodaj książkę")
+    print("19 - Wyświetl książki")
+    print("20 - Edytuj książkę")
+    print("21 - Usuń książkę")
 
     print("\n0 - Wyjście")
 
@@ -79,6 +83,18 @@ while True:
 
     elif wybor == "17":
         read_pracownicy_biblioteki()
+
+    elif wybor == "18":
+        add_ksiazka()
+
+    elif wybor == "19":
+        read_ksiazki()
+
+    elif wybor == "20":
+        update_ksiazka()
+
+    elif wybor == "21":
+        delete_ksiazka()
 
     elif wybor == "0":
         break

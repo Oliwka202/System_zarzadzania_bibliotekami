@@ -1,5 +1,5 @@
 
-from model import biblioteki, klienci, pracownicy
+from model import biblioteki, klienci, pracownicy, ksiazki
 import requests
 import folium
 from bs4 import BeautifulSoup
@@ -432,8 +432,97 @@ def read_pracownicy_biblioteki():
         if not znaleziono:
             print("Brak pracowników")
 
-    else:
-        print("Nieprawidłowy numer")
+# ksiazki
+
+def add_ksiazka():
+
+    tytul = input("Podaj tytuł książki: ").title()
+    autor = input("Podaj autora: ").title()
+
+    if len(biblioteki) == 0:
+        print("Brak bibliotek")
+        return
+
+    print("\nDostępne biblioteki:")
+
+    for i, biblioteka in enumerate(biblioteki):
+        print(f"{i+1}. {biblioteka['nazwa']}")
+
+    numer = int(input("Wybierz numer biblioteki: "))
+
+    if 1 <= numer <= len(biblioteki):
+
+        ksiazka = {
+            "tytul": tytul,
+            "autor": autor,
+            "biblioteka": biblioteki[numer - 1]["nazwa"]
+        }
+
+        ksiazki.append(ksiazka)
+
+        print("Książka została dodana")
+
+def read_ksiazki():
+
+    if len(ksiazki) == 0:
+        print("Brak książek")
+        return
+
+    for i, ksiazka in enumerate(ksiazki):
+
+        print(
+            f"{i+1}. "
+            f"{ksiazka['tytul']} - "
+            f"{ksiazka['autor']} - "
+            f"{ksiazka['biblioteka']}"
+        )
+
+
+def update_ksiazka():
+
+    if len(ksiazki) == 0:
+        print("Brak książek")
+        return
+
+    read_ksiazki()
+
+    numer = int(input("Podaj numer książki do edycji: "))
+
+    if 1 <= numer <= len(ksiazki):
+
+        nowy_tytul = input("Nowy tytuł: ").title()
+        nowy_autor = input("Nowy autor: ").title()
+
+        print("\nDostępne biblioteki:")
+
+        for i, biblioteka in enumerate(biblioteki):
+            print(f"{i+1}. {biblioteka['nazwa']}")
+
+        numer_biblioteki = int(input("Wybierz numer biblioteki: "))
+
+        if 1 <= numer_biblioteki <= len(biblioteki):
+
+            ksiazki[numer - 1]["tytul"] = nowy_tytul
+            ksiazki[numer - 1]["autor"] = nowy_autor
+            ksiazki[numer - 1]["biblioteka"] = biblioteki[numer_biblioteki - 1]["nazwa"]
+
+            print("Książka została zaktualizowana")
+
+def delete_ksiazka():
+
+    if len(ksiazki) == 0:
+        print("Brak książek")
+        return
+
+    read_ksiazki()
+
+    numer = int(input("Podaj numer książki do usunięcia: "))
+
+    if 1 <= numer <= len(ksiazki):
+
+        ksiazki.pop(numer - 1)
+
+        print("Książka została usunięta")
 
 
 
